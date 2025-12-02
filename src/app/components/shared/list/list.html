@@ -1,0 +1,21 @@
+<ul class="w-full flex flex-col gap-3">
+    @for(item of todos.items(); track item.id){
+    <li class="bg-(--bg-100) px-3 py-2 rounded-lg border-2 border-(--primary-200) flex">
+        <button (click)="todos.toggle(item.id)" class="px-2 py-1 rounded-lg cursor-pointer flex items-center justify-center">
+            <mat-icon>{{item.completed ? 'check_box' : 'check_box_outline_blank'}}</mat-icon>
+        </button>
+        <span class="flex flex-1 items-center"[class.line-through]="item.completed">
+            {{item.title}}
+        </span> 
+        <span class="rounded-full bg-(--primary-300) px-3 py-1"
+            [class.bg-yellow-300]="!item.completed" 
+            [class.bg-green-300]="item.completed">
+            {{item.completed ? 'Completed' : 'Pending'}}
+        </span>
+        
+        <button (click)="todos.remove(item.id)" class="ml-3 px-2 py-1 rounded-lg cursor-pointer flex items-center justify-center bg-red-500 text-white">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </li>
+    }
+</ul>
