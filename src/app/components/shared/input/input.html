@@ -1,6 +1,7 @@
 <div class="border-2 border-(--primary-100) rounded-lg px-3 py-1 w-full 
     outline-none focus:border-(--primary-200) bg-(--bg-100) flex gap-2">
-    <input [(ngModel)]="todoTitle" type="text" placeholder="Enter text here..." class="flex-1 outline-none"/>
+    <input [(ngModel)]="todoTitle" type="text" placeholder="Enter text here..." class="flex-1 outline-none"
+        (keyup.enter)="addTodo($event, todoTitle)"/>
     <button
         type="submit"
         (click)="addTodo($event, todoTitle)"

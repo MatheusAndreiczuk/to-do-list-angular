@@ -1,15 +1,20 @@
 import { Todo } from './../models/todo.entity';
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  private readonly _items = signal<Array<Todo>>([
-    { id: crypto.randomUUID(), title: 'Learn Angular Signals', completed: false },
-    { id: crypto.randomUUID(), title: 'Build a To-Do App', completed: false },
-    { id: crypto.randomUUID(), title: 'Master TypeScript', completed: true },
-  ]);
+  private readonly _items = signal<Array<Todo>>([]);
+
+  constructor(){
+    this.load();
+
+    effect(() => {
+      const todos = this._items();
+      localStorage.setItem('todos', JSON.stringify(todos));
+    })
+  }
 
   toggle(id:string) {
     this._items.update((items) => 
@@ -30,6 +35,16 @@ export class TodoService {
       completed: false
     };
     this._items.update((items) => [...items, newTodo]);
+  }
+
+  load(){
+     const _storageTodos = localStorage.getItem('todos');
+     if(_storageTodos){
+      const todos: Array<Todo> = JSON.parse(_storageTodos);
+      this._items.set(todos);
+     } else {
+      this._items.set([]);
+     }
   }
 
   readonly items = this._items.asReadonly();
